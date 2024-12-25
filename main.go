@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"os/exec"
 
 	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
@@ -35,6 +36,7 @@ type model struct {
 	finished       bool
 	activeTabIndex int // Track active tab index
 	tabs           []string
+	gpuDetected    bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -143,6 +145,15 @@ func (m model) View() string {
 		}
 
 		tabView = fmt.Sprintf("%s\n\nCore Loads\n%s", memoryUsage, gridRows)
+
+		if m.gpuDetected {
+    		gpuColorOptions := progress.WithGradient("#FFFB00", "#FF0084")
+            gpuProgressBar := progress.New(
+			             gpuColorOptions,)
+
+            tabView += fmt.Sprintf("GPU Usage\n%s", gpuProgressBar.View())
+		}
+
 	case 1:
 		// Placeholder for future content
 		tabView = "No Other System Running SOURUS Discovered On Network"
@@ -170,6 +181,13 @@ func main() {
 	colorOptions := progress.WithGradient("#00A5BF", "#BF008F")
 	p := progress.New(colorOptions)
 
+    // check if a GPU is available.
+    gpuCall := exec.Command("nvidia-smi")
+    nvidiaCall := false
+	if gpuCall.Run() == nil {
+		nvidiaCall = true
+	}
+
 	m := model{
 		progress:      p,
 		percent:       0,
@@ -179,6 +197,7 @@ func main() {
 		finished:      false,
 		activeTabIndex: 0,
 		tabs:           []string{"Memory Usage", "Other Information"},
+		gpuDetected:     nvidiaCall,
 	}
 
 	_, err := tea.NewProgram(m).Run()
