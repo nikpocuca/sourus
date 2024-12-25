@@ -89,13 +89,19 @@ func (m model) View() string {
 		Foreground(lipgloss.Color("15")).
 		Align(lipgloss.Center)
 
+	boxStyleHeader := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).
+	BorderForeground(lipgloss.Color("12")).
+	Align(lipgloss.Center).
+	Width(60)
+
 	// Define a style for the box
 	boxStyle := lipgloss.NewStyle().
-		Padding(1, 2).
+		// Padding().
 		Border(lipgloss.NormalBorder()).
 		BorderForeground(lipgloss.Color("12")).
 		Align(lipgloss.Center).
 		Width(60)
+
 
 	// Define a style for the instructions
 	instructionsStyle := lipgloss.NewStyle().
@@ -136,7 +142,7 @@ func (m model) View() string {
 			}
 		}
 
-		tabView = fmt.Sprintf("%s\n\nCore Loads:\n%s", memoryUsage, gridRows)
+		tabView = fmt.Sprintf("%s\n\nCore Loads\n%s", memoryUsage, gridRows)
 	case 1:
 		// Placeholder for future content
 		tabView = "No Other System Running SOURUS Discovered On Network"
@@ -145,7 +151,7 @@ func (m model) View() string {
 	// Construct the final view with the header and tab content
 	content := fmt.Sprintf(
 		"%s\n%s\n\n",
-		header,
+		boxStyleHeader.Render(header),
 		boxStyle.Render(tabView),
 	)
 
@@ -161,13 +167,6 @@ func (m model) View() string {
 func main() {
     cpuLoads, _ := getCPULoads()
 
-    // Print the CPU loads for each core
-	fmt.Println("CPU Loads for each core:")
-	for i, load := range cpuLoads {
-		fmt.Printf("Core %d: %.2f%%\n", i, load)
-	}
-
-    fmt.Println(cpuLoads)
 	colorOptions := progress.WithGradient("#00A5BF", "#BF008F")
 	p := progress.New(colorOptions)
 
@@ -176,7 +175,7 @@ func main() {
 		percent:       0,
 		usedMemoryGB:  0.0,
 		totalMemoryGB: 0.0,
-		coreLoad:      []float64{0.0, 0.0, 0.0, 0.0},
+		coreLoad:      cpuLoads,
 		finished:      false,
 		activeTabIndex: 0,
 		tabs:           []string{"Memory Usage", "Other Information"},
