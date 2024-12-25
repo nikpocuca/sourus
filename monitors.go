@@ -2,23 +2,26 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"strings"
+	"time"
 	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v3/cpu"
+
 )
 
-func getFanSpeed() (string, error) {
-	// Path to fan speed file, this path may vary based on your system configuration
-	// You can find the fan speed by checking /sys/class/hwmon/ or using the `sensors` command.
-	filePath := "/sys/class/hwmon/hwmon0/fan1_input"
+// getCPULoads returns the CPU load percentages for each core.
+func getCPULoads() ([]float64, error) {
+	// Specify the interval to calculate CPU usage (e.g., 1 second).
+	interval := time.Millisecond * 500
 
-	data, err := ioutil.ReadFile(filePath)
+	// Fetch CPU usage for each core.
+	percentages, err := cpu.Percent(interval, true)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return strings.TrimSpace(string(data)), nil
+	return percentages, nil
 }
+
 
 func monitorRam()  (float64, float64, float64){
     virtualMemory, errorMemory := mem.VirtualMemory()

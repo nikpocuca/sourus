@@ -31,6 +31,7 @@ type model struct {
 	percent        float64
 	totalMemoryGB  float64
 	usedMemoryGB   float64
+	coreLoad       []float64
 	finished       bool
 	activeTabIndex int // Track active tab index
 	tabs           []string
@@ -57,7 +58,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.usedMemoryGB = usedMemoryMB / 1000
 		m.totalMemoryGB = totalMemoryMB / 1000
 
-		if m.percent >= 1.0 {
+		cpuLoads, _ :=  getCPULoads()
+		m.coreLoad = cpuLoads
+
+        if m.percent >= 1.0 {
 			if !m.finished {
 				m.percent = 1.0
 				cmd := m.progress.SetPercent(m.percent)
@@ -105,9 +109,36 @@ func (m model) View() string {
 	switch m.activeTabIndex {
 	case 0:
 		// Memory Tab
-		tabView = fmt.Sprintf("Host Memory: %0.2fG/%0.1fG\n%s\n", m.usedMemoryGB, m.totalMemoryGB, m.progress.View())
+		memoryUsage := fmt.Sprintf("Host Memory: %0.2fG/%0.1fG\n%s\n", m.usedMemoryGB, m.totalMemoryGB, m.progress.View())
+
+		// Construct Core Load Grid with Progress Bars
+		gridRows := ""
+		colsPerRow := 2 // Number of columns in the grid
+		for i, load := range m.coreLoad {
+
+
+      		colorOptions := progress.WithGradient("#B0FF00", "#FF0F00")
+			coreProgressBar := progress.New(
+			             colorOptions,
+			             progress.WithWidth(10),
+						 progress.WithoutPercentage(),
+			             )
+
+			// Set the percentage for the core's load
+			barView := coreProgressBar.ViewAs(load / 100.0)
+
+			gridRows += fmt.Sprintf("%5.1f%% %s", load, barView)
+
+			if (i+1)%colsPerRow == 0 || i == len(m.coreLoad)-1 {
+				gridRows += "\n" // New row after reaching column limit
+			} else {
+				gridRows += "\t" // Tab space between columns
+			}
+		}
+
+		tabView = fmt.Sprintf("%s\n\nCore Loads:\n%s", memoryUsage, gridRows)
 	case 1:
-		// Other tab (placeholder for future content)
+		// Placeholder for future content
 		tabView = "No Other System Running SOURUS Discovered On Network"
 	}
 
@@ -126,7 +157,17 @@ func (m model) View() string {
 }
 
 
+
 func main() {
+    cpuLoads, _ := getCPULoads()
+
+    // Print the CPU loads for each core
+	fmt.Println("CPU Loads for each core:")
+	for i, load := range cpuLoads {
+		fmt.Printf("Core %d: %.2f%%\n", i, load)
+	}
+
+    fmt.Println(cpuLoads)
 	colorOptions := progress.WithGradient("#00A5BF", "#BF008F")
 	p := progress.New(colorOptions)
 
@@ -135,6 +176,7 @@ func main() {
 		percent:       0,
 		usedMemoryGB:  0.0,
 		totalMemoryGB: 0.0,
+		coreLoad:      []float64{0.0, 0.0, 0.0, 0.0},
 		finished:      false,
 		activeTabIndex: 0,
 		tabs:           []string{"Memory Usage", "Other Information"},
