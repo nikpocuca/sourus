@@ -33,7 +33,7 @@ func main() {
 		coreLoad:       cpuLoads,
 		finished:       false,
 		activeTabIndex: 0,
-		tabs:           []string{"Memory Usage", "Other Information"},
+		tabs:           []string{"HOST", "NEW"},
 		gpuDetected:    nvidiaCall,
 	}
 
