@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/charmbracelet/bubbles/progress"
@@ -48,15 +49,19 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cpuLoads, _ := getCPULoads()
 		m.coreLoad = cpuLoads
 
-		if m.percent >= 1.0 {
-			if !m.finished {
-				m.percent = 1.0
-				cmd := m.progress.SetPercent(m.percent)
-				m.finished = true
-				return m, tea.Batch(cmd, finishedTick())
-			}
-		}
 		cmd := m.progress.SetPercent(m.percent)
+
+		if m.gpuDetected {
+    		gpuInfo, err := monitorGPU()
+
+    		if err != nil {
+    			fmt.Println("Could not update GPU Information, error called")
+    			fmt.Println(err)
+    			return m, tea.Quit
+    		}
+
+    		m.gpuInfo = &gpuInfo
+		}
 		return m, tea.Batch(cmd, tick())
 	case finishedMsg:
 		return m, tea.Quit
