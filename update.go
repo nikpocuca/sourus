@@ -67,7 +67,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 
-		m.gpuInfo = gpuInfo
+		m.gpuInfo = &gpuInfo
 
 		return m, tea.Batch(cmd, tick())
 	case finishedMsg:

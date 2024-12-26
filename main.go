@@ -18,7 +18,7 @@ func main() {
 	// check if a GPU is available.
 	gpuCall := exec.Command("nvidia-smi")
 	nvidiaCall := false
-	var nvidiaInfoGPU GPUInfo
+	var nvidiaInfoGPU *GPUInfo
 
 	if gpuCall.Run() == nil {
 		nvidiaCall = true
@@ -29,7 +29,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		nvidiaInfoGPU = infoGPU
+		nvidiaInfoGPU = &infoGPU
 	}
 
 	// get preliminary
