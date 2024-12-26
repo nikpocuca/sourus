@@ -51,16 +51,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		cmd := m.progress.SetPercent(m.percent)
 
-		gpuInfo, err := monitorGPU()
+		if m.gpuDetected {
+    		gpuInfo, err := monitorGPU()
 
-		if err != nil {
-			fmt.Println("Could not update GPU Information, error called")
-			fmt.Println(err)
-			return m, tea.Quit
+    		if err != nil {
+    			fmt.Println("Could not update GPU Information, error called")
+    			fmt.Println(err)
+    			return m, tea.Quit
+    		}
+
+    		m.gpuInfo = &gpuInfo
 		}
-
-		m.gpuInfo = &gpuInfo
-
 		return m, tea.Batch(cmd, tick())
 	case finishedMsg:
 		return m, tea.Quit
