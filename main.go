@@ -42,7 +42,6 @@ func main() {
 		usedMemoryGB:   0.0,
 		totalMemoryGB:  0.0,
 		coreLoad:       cpuLoads,
-		finished:       false,
 		activeTabIndex: 0,
 		tabs:           []string{"HOST", "NEW"},
 		gpuDetected:    nvidiaCall,

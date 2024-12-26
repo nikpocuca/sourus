@@ -24,7 +24,6 @@ type model struct {
 	totalMemoryGB  float64
 	usedMemoryGB   float64
 	coreLoad       []float64
-	finished       bool
 	activeTabIndex int
 	tabs           []string
 

@@ -49,14 +49,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cpuLoads, _ := getCPULoads()
 		m.coreLoad = cpuLoads
 
-		if m.percent >= 1.0 {
-			if !m.finished {
-				m.percent = 1.0
-				cmd := m.progress.SetPercent(m.percent)
-				m.finished = true
-				return m, tea.Batch(cmd, finishedTick())
-			}
-		}
 		cmd := m.progress.SetPercent(m.percent)
 
 		gpuInfo, err := monitorGPU()
