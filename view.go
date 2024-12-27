@@ -20,7 +20,7 @@ func HostView(m *model) string {
 
 	// Construct Core Load Grid with Progress Bars
 	gridRows := ""
-	colsPerRow := 2 // Number of columns in the grid
+	colsPerRow := m.colorTheme.CPULoadGridColumns // Number of columns in the grid
 	for i, load := range m.coreLoad {
 
 		colorOptions := progress.WithGradient(
@@ -80,6 +80,8 @@ func RemoteView(m *model, tabIndex int) string {
 }
 
 func (m model) View() string {
+	
+	widthView := m.colorTheme.AppWidth
 
 	// Define a style for the header
 	headerStyle := lipgloss.NewStyle().
@@ -90,7 +92,7 @@ func (m model) View() string {
 	boxStyleHeader := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(m.colorTheme.BorderColor)).
 		Align(lipgloss.Center).
-		Width(60)
+		Width(widthView)
 
 	// Define a style for the box
 	boxStyle := lipgloss.NewStyle().
@@ -98,7 +100,7 @@ func (m model) View() string {
 		Border(lipgloss.NormalBorder()).
 		BorderForeground(lipgloss.Color(m.colorTheme.BorderColor)).
 		Align(lipgloss.Center).
-		Width(60)
+		Width(widthView)
 
 	// Define a style for the instructions
 	instructionsStyle := lipgloss.NewStyle().
