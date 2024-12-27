@@ -11,8 +11,15 @@ import (
 
 func main() {
 
+	colorTheme := GenerateTheme()
+
 	// handle configs
-	colorOptions := progress.WithGradient("#00A5BF", "#BF008F")
+
+	colorOptions := progress.WithGradient(
+		colorTheme.HostMemoryGradientColors.Left,
+		colorTheme.HostMemoryGradientColors.Right,
+	)
+
 	p := progress.New(colorOptions)
 
 	// check if a GPU is available.
@@ -46,6 +53,7 @@ func main() {
 		tabs:           []string{"HOST", "NEW"},
 		gpuDetected:    nvidiaCall,
 		gpuInfo:        nvidiaInfoGPU,
+		colorTheme:     colorTheme,
 	}
 
 	// start cli program

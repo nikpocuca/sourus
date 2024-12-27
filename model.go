@@ -26,6 +26,7 @@ type model struct {
 	coreLoad       []float64
 	activeTabIndex int
 	tabs           []string
+	colorTheme     ColorTheme
 
 	/*
 		Track GPU Information

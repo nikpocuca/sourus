@@ -23,7 +23,10 @@ func HostView(m *model) string {
 	colsPerRow := 2 // Number of columns in the grid
 	for i, load := range m.coreLoad {
 
-		colorOptions := progress.WithGradient("#B0FF00", "#FF0F00")
+		colorOptions := progress.WithGradient(
+			m.colorTheme.CPULoadGradientColors.Left,
+			m.colorTheme.CPULoadGradientColors.Right,
+		)
 		coreProgressBar := progress.New(
 			colorOptions,
 			progress.WithWidth(10),
@@ -45,7 +48,11 @@ func HostView(m *model) string {
 	tabView = fmt.Sprintf("%s\n\nCore Loads\n%s", memoryUsage, gridRows)
 
 	if m.gpuDetected {
-		gpuColorOptions := progress.WithGradient("#FFFB00", "#FF0084")
+
+		gpuColorOptions := progress.WithGradient(
+			m.colorTheme.GPUGradientColors.Left,
+			m.colorTheme.GPUGradientColors.Right,
+		)
 		gpuProgressBar := progress.New(
 			gpuColorOptions)
 
@@ -77,11 +84,11 @@ func (m model) View() string {
 	// Define a style for the header
 	headerStyle := lipgloss.NewStyle().
 		Bold(true).
-		Foreground(lipgloss.Color("15")).
+		Foreground(lipgloss.Color(m.colorTheme.HeaderTitleColor)).
 		Align(lipgloss.Center)
 
 	boxStyleHeader := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("12")).
+		BorderForeground(lipgloss.Color(m.colorTheme.BorderColor)).
 		Align(lipgloss.Center).
 		Width(60)
 
@@ -89,13 +96,13 @@ func (m model) View() string {
 	boxStyle := lipgloss.NewStyle().
 		// Padding().
 		Border(lipgloss.NormalBorder()).
-		BorderForeground(lipgloss.Color("12")).
+		BorderForeground(lipgloss.Color(m.colorTheme.BorderColor)).
 		Align(lipgloss.Center).
 		Width(60)
 
 	// Define a style for the instructions
 	instructionsStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("14"))
+		Foreground(lipgloss.Color(m.colorTheme.InstructionsColor))
 
 	// Header to display on each view
 	header := headerStyle.Render("SOURUS MONITOR")

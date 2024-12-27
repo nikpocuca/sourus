@@ -38,4 +38,4 @@ To run `sourus`, just call it via CLI:
 └────────────────────────────────────────────────────────────┘
 ```
 
-You can add it to your `PATH` or place it in  `/usr/bin/`. 
+You can add it to your `PATH` or place it in  `/usr/bin/`.
