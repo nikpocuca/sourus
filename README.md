@@ -43,3 +43,8 @@ To run `sourus`, just call it via CLI:
 ```
 
 You can add it to your `PATH` or place it in  `/usr/bin/`.
+
+
+## Acknowledgments 
+
+Many thanks to [Michael McCulloch](https://github.com/MichaelMcCulloch) for testing and providing feedback on v0.1.0. 
