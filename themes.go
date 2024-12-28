@@ -100,7 +100,6 @@ func GenerateTheme() ColorTheme {
 
 	_, infoErr := os.Stat(settingsPath)
 
-	fmt.Println(infoErr)
 	// file already exists
 	if infoErr == nil {
 
