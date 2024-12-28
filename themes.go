@@ -103,8 +103,6 @@ func GenerateTheme() ColorTheme {
 	// file already exists
 	if infoErr == nil {
 
-		fmt.Println("Theme already exists")
-
 		// read in yml file where  into ColorTheme
 		file, openErr := os.Open(filepath.Join(settingsPath, settingsFile))
 
@@ -122,13 +120,11 @@ func GenerateTheme() ColorTheme {
 			return GenerateDarkTheme()
 		}
 
-		fmt.Println(importedTheme.ThemeName, "loaded")
 		return importedTheme
 	}
 
 	// newly created file
 	if err == nil {
-		fmt.Println("New Settings Directory")
 
 		chmodErr := os.Chmod(settingsPath, 0777)
 
