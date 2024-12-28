@@ -5,6 +5,10 @@ Why the name "Sourus"? It means lizard in greek, which is a play on "monitor liz
 
 Theres a couple of releases for Intel-macos and Linux. 
 
+## Colorful Themes! 
+
+<img src="https://github.com/user-attachments/assets/00310bd6-8a58-44a0-8dfc-7c1e114c75b3" width="600" />
+
 ## Build 
 
 Requires `go`-lang version 1.23+, and you need to pull in a few dependencies. The entire binary is only 4MB in size.
