@@ -3,7 +3,7 @@
 This is an all-in-one CLI monitor tool for memory, core load, and GPU utilization.
 Why the name "Sourus"? It means lizard in greek, which is a play on "monitor lizard".
 
-Currently this tool is build-only. 
+Theres a couple of releases for Intel-macos and Linux. 
 
 ## Build 
 
