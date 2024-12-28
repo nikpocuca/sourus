@@ -7,7 +7,15 @@ Theres a couple of releases for Intel-macos and Linux.
 
 ## Colorful Themes! 
 
+You can customize the theme of the cli app under `~/.sourus/settings.yml`. 
+
 <img src="https://github.com/user-attachments/assets/00310bd6-8a58-44a0-8dfc-7c1e114c75b3" width="600" />
+
+It will even show your GPU information! 
+
+![sourus](https://github.com/user-attachments/assets/5a14ec6b-759e-4db1-917e-84d085b83e88)
+
+You can also customize the size of the width of the app, and the arangement of the columnns. 
 
 ## Build 
 
