@@ -15,7 +15,7 @@ It will even show your GPU information!
 
 ![sourus](https://github.com/user-attachments/assets/5a14ec6b-759e-4db1-917e-84d085b83e88)
 
-You can also customize the size of the width of the app, and the arangement of the columnns. 
+You can also customize the size of the width of the app, and the arangement of the columns. 
 
 ## Build 
 
