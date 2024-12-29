@@ -58,12 +58,29 @@ func HostView(m *model) string {
 
 		// handle gpu info in model.
 
+		gpuUtilizationBar := progress.New(gpuColorOptions)
+
+		utilizationOfGPU := m.gpuInfo.UtilizationGPU
+
+		tabView += fmt.Sprintf("\nGPU Utilization: %0.2f %% \n %s ",
+			utilizationOfGPU,
+			gpuUtilizationBar.ViewAs(utilizationOfGPU))
+
 		usedMemoryPercentage := m.gpuInfo.MemoryUsed / m.gpuInfo.MemoryTotal
-		tabView += fmt.Sprintf("\nGPU Usage:  %0.2fMiB/%0.1fMiB \n%s\n %s",
+
+		// handle temperature.
+
+		temperatureOfGPU := m.gpuInfo.Temperature
+		tabView += fmt.Sprintf("\n\nTemperature: %0.2f °C \n ",
+			temperatureOfGPU,
+		)
+
+		tabView += fmt.Sprintf("\nGPU Memory:  %0.2fMiB/%0.1fMiB \n%s\n %s",
 			m.gpuInfo.MemoryUsed,
 			m.gpuInfo.MemoryTotal,
 			gpuProgressBar.ViewAs(usedMemoryPercentage),
 			m.gpuInfo.Name)
+
 	}
 
 	return tabView
@@ -80,7 +97,7 @@ func RemoteView(m *model, tabIndex int) string {
 }
 
 func (m model) View() string {
-	
+
 	widthView := m.colorTheme.AppWidth
 
 	// Define a style for the header
@@ -126,7 +143,7 @@ func (m model) View() string {
 
 		if identifier == "NEW" {
 			// Placeholder for future content
-			tabView = "No Other System Running SOURUS Discovered On Network"
+			tabView = "Future Remote Monitoring Feature Under Construction, Not Available ATM"
 		}
 	}
 
@@ -138,7 +155,7 @@ func (m model) View() string {
 	)
 
 	// Add instructions below the box
-	instructions := instructionsStyle.Render("Press 'TAB' to switch tabs\nPress 'q' to quit")
+	instructions := instructionsStyle.Render("Press 'q' to quit")
 
 	// Combine everything
 	return content + instructions
