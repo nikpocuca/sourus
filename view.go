@@ -64,7 +64,7 @@ func HostView(m *model) string {
 
 		tabView += fmt.Sprintf("\nGPU Utilization: %0.2f %% \n %s ",
 			utilizationOfGPU,
-			gpuUtilizationBar.ViewAs(utilizationOfGPU))
+			gpuUtilizationBar.ViewAs(utilizationOfGPU/100.0))
 
 		usedMemoryPercentage := m.gpuInfo.MemoryUsed / m.gpuInfo.MemoryTotal
 
