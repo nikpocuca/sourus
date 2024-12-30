@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"runtime"
 
 	"gopkg.in/yaml.v3"
 )
@@ -90,17 +91,28 @@ const settingsDir string = ".sourus"
 
 const settingsFile string = "settings.yml"
 
+const macOsPath string  = "/Users"
+const linuxOsPath string = "/home"
+
+
 func GenerateTheme() ColorTheme {
 
+    // get platform information whether mac or linux.
+
 	currentUser, _ := user.Current()
+	var settingsPath string
+	switch runtime.GOOS {
+	    case "darwin":
+    		settingsPath = filepath.Join(macOsPath, currentUser.Username, settingsDir)
+        case "linux":
+            settingsPath = filepath.Join(linuxOsPath, currentUser.Username, settingsDir)
+	}
 
-	settingsPath := filepath.Join("/home", currentUser.Username, settingsDir)
+	err := os.MkdirAll(settingsPath, 0755)
 
-	err := os.MkdirAll(settingsPath, os.ModeDir)
+	_, infoErr := os.Stat(filepath.Join(settingsPath, settingsFile))
 
-	_, infoErr := os.Stat(settingsPath)
-
-	// file already exists
+	// folder already exists
 	if infoErr == nil {
 
 		// read in yml file where  into ColorTheme
